@@ -1,0 +1,62 @@
+\documentclass [twocolumn, a4paper] {article}
+\usepackage [spanish] {babel}
+\usepackage [latin1] {inputenc}
+\usepackage [T1] {fontenc}
+\usepackage{graphicx}
+
+\title{Práctica 2: Acondicionamiento de Señal}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\listoffigures
+\listoftables
+
+\begin{abstract}
+Resúmen de la práctica 2 de Instrumentación Electrónica de cara al exámen práctico de mayo.
+\end{abstract}
+
+\section{Objetivo}
+El objetivo de la práctica es familiarizarse con los circuitos de adaptación de medida y tomar conciencia de la importancia de la función de transferencia de tales circuitos. En este tipo de circuitos es importante disponer de una función de transferencia lineal.
+
+%para un salto de párrafo se deja un renglón en blanco entre párrafo
+%y párrafo
+Además se pretende poner de manifiesto las diferencias entre las representaciones esquemáticas de los circuitos empleados y los montajes reales de los mismos.
+\section{Introducción}
+Introducción teórica de cada uno de los bloques que componen la práctica.
+\subsection{Divisor resistivo}
+  \begin{figure}
+ 		 \centering
+   			 \includegraphics{div_rest1}
+ 		 \caption{Divisor resistivo}
+  		\label{fig:divisor}
+	\end{figure}
+La manera más simple de construir un divisor resistivo es mediante un potenciómetro, los potenciómetros pueden funcionar como \emph{reostatos} o \emph{divisores resistivos}. En el caso de un reostato, se desea que la resistencia del potenciómetro sea ajustable a voluntad, pero no se desea establecer una salida adicional del mismo, así que se cortocuitan o unen dos de las tres patas del potenciómetro.
+
+Para el divisor resistivo, como se ve en la figura~\ref{fig:divisor} se tienen dos resistencias en serie, de manera que la suma de los valores de ambas resistencias es siempre igual al valor total del potenciómetro. Las ecuaciones que describen este comportamiento son:
+	\begin{equation} 
+		\label{eq:div_res}
+			R_{1}=X \cdot R_{max}
+	\end{equation}
+
+	\begin{equation} 
+		\label{eq:div_res2}
+			R_{2}=(1-X) \cdot R_{max}
+	\end{equation}
+Donde $R_{max}$ es el valor resistivo máximo del potenciómetro y $X$ la "fracción" de giro completado del tornillo hasta llegar al fondo de escala.
+\subsection{Adpatación de señal mediante divisor resistivo}
+Sea un sensor tal que variaciones en la magnitud física a la que es sensible provoque variaciones en el valor resistivo del sensor. Para obtener una señal eléctrica a partir de dicho sensor se puede emplear un divisor resistivo como el de la figura~\ref{fig:divisor2}
+	\begin{figure}
+ 		 \centering
+   			 \includegraphics{div_rest2}
+ 		 \caption{Adaptación mediante divisor resistivo}
+  		\label{fig:divisor2}
+	\end{figure}
+Donde la resistencia variable $R_{s}$, representa la resistencia del sensor para un valor dado de la magnitud física a la que es sensible. La función de transferencia del circuito de la figura~\ref{fig:divisor2} es la que viene dada por la ecuación~\ref{eq:f_t_div_res}
+	\begin{equation}
+		\label{eq:f_t_div_res}
+			G(R_{s})=\frac{V_{out}}{V_{in}}=\frac{R_{s}}{R_{s}+R_{1}}
+	\end{equation}
+\end{document}
