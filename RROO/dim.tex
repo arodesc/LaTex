@@ -1,0 +1,80 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\begin{document}
+\section{Dimensionamiento}
+A la hora de estimar el tráfico de la red con el fin de dimensionar los enlaces de datos, se decide emplear el modelo ON/OFF para modelar el comportamiento de los terminales de red, exceptuando los terminales VoIP.
+
+En primer lugar hay que definir el perfil de comportamiento de los usuarios de cara al protocolo empleado. Dicho perfil se resume en la siguiente tabla a partir de los porcentajes de uso de los protocolos en uso.\\
+
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+Sector & HTTP & FTTP & POP3/SMTP & Impresión \\ 
+\hline 
+Departamentos & 30\% & 20\% & 10\% & 10\% \\ 
+\hline 
+Aulas  & 10\% & 10\% & 0\% & 0\% \\ 
+\hline 
+Laboratorios & 10\% & 10\% & 0\% & 0\% \\ 
+\hline 
+Secretarías & 20\% & 40\% & 5\% & 3\% \\ 
+\hline 
+CDC(Despachos) & 30\% & 20\% & 10\% & 10\% \\ 
+\hline 
+CDC(Aulas) & 30\% & 20\% & 10\% & 0\% \\ 
+\hline 
+\end{tabular}\\
+
+Hay que tener en cuenta que el modelo ON/OFF establece la tasa de rendimiento de una fuente a partir de:
+\begin{equation}
+	\rho=\frac{Ton}{Ton+Toff}
+\end{equation}
+
+\subsection{Enlace Descendente}
+El comportamiento de los protocolos en cuanto tiempo, tamaño y régimenes binarios se detalla en la siguiente tabla:\\
+
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline 
+Protocolo & Ton(s) & Toff(s) & Tamaño(MB) & Rb(Mbps) & rho \\ 
+\hline 
+HTTP & 3 & 57 & 1.25 & 3.333 & 0.0515  \\ 
+\hline 
+POP3/SMTP & 2 & 58 & 0.3 & 1.2 & 0.033 \\ 
+\hline 
+TFTP & 15 & 285 & 4 & 2.133 & 0.0519 \\ 
+\hline 
+Impresión & 2 & 5 & 0.5 & 2 & 0.285 \\ 
+\hline 
+\end{tabular}\\ 
+
+Hay que tener en cuenta que este tráfico representa una parte del tráfico TCP, ya que se han considerado únicamente los protocolos más empleados. Por lo tanto,también es necesario añadir el tráfico UDP que proviene de aplicaciones multimedia.
+
+Una vez obtenido el tráfico de acuerdo con los porcentajes de uso de los distintos protocolos, es necesario obtener el número de usuarios que, simultáneamente, estarán haciendo uso de la red de datos.
+
+
+
+\subsection{Enlace Ascendente}
+De manera análoga al enlace descendente se establecen los siguientes requerimientos:\\
+
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline 
+Protocolo & Ton(s) & Toff(s) & Tamaño(MB) & Rb(Mbps) & rho \\ 
+\hline 
+HTTP & 3 & 57 & 0.02 & 0.053 & 0.0515 \\ 
+\hline 
+POP3/SMTP & 2 & 58 & 0.3 & 1.2 & 0.033 \\ 
+\hline 
+TFTP & 15 & 285 & 0.4 & 1.066 & 0.0519 \\ 
+\hline 
+Impresión & 2 & 5 & 0.5 & 2 & 0.285 \\ 
+\hline 
+\end{tabular}\\
+
+Haciendo las consideraciones sobre el tráfico TCP y UDP, y siguiendo el mismo procedimiento que con el enlace descendente se tiene que:
+
+\subsection{Telefon\'ia IP}
+
+\end{document}

@@ -1,0 +1,127 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+
+%opening
+\title{Redes de Ordenadores}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+
+\section{Memoria Descriptiva.}
+\subsection{Datos generales.}
+\subsubsection{Datos del promotor.}
+\begin{itemize}
+ \item Nombre:
+ \item Domicilio:
+ \item CIF:
+ \item Población:
+ \item Teléfono:
+\end{itemize}
+
+\subsubsection{Objeto del proyecto.}
+El objetivo del proyecto es llevar a cabo la red de datos de la planta E2 y de los laboratorios 
+de la Escuela Superior de Ingenieros de la Universidad de Sevilla. Además de la red de datos, 
+se preveé la dotación de la red de VoIP, así como la de videovigilancia IP.
+\subsubsection{Descripción del edificio o complejo urbano.}
+El edificio sobre el cual se va a realizar la instalación se encuentra situado en el Camino de los
+Descubrimientos s/n. La edificación en cuestión consta de planta baja más un sótano, junto con un
+edificio de laboratorios que se encuentra, aproximadamente a 200m.
+
+La planta baja consta de los departamentos de Telemática, Teoría de la Señal y Comunicaciones, 
+Ingeniería Electrónica e Ingeniería de Sistemas y Automática. Además está equipada con una serie de
+aulas y con el Centro de Cálculo, formando por despachos y aulas informáticas.
+
+La función única del sótano es albergar los equipos que posibiliten la comuninación con el exterior
+de la red objeto de este proyecto. El uso del edificio de laboratorios está destinado a los
+departamentos de Telemática y de Teoría de la Señal y Telecomunicaciones.
+
+En la siguiente tabla se resume la división que se hace de la ESI junto con los terminales que se pretenden instalar.
+
+\begin{tabular}{|c|c|}
+\hline   & \textbf{Terminales} \\ 
+\hline  Telemática & 30 \\ 
+\hline  Señales & 30 \\ 
+\hline  Automática & 28 \\ 
+\hline  Electrónica & 56 \\ 
+\hline  VoIP & 199 \\ 
+\hline  WIFI & 10 \\ 
+\hline  Laboratorios Señal & 25 \\ 
+\hline  Laboratorios Telemática & 30 \\ 
+\hline  Servidores & 9 \\ 
+\hline  Personal Admin y Servicios & 5 \\ 
+\hline  CDC/despachos & 32 \\ 
+\hline  CDC/aulas & 110 \\ 
+\hline 
+\end{tabular} \\ \\
+Para el direccionamiento se preveen tanto direcciones privadas como públicas. Las IP públicas en el caso de los departamentos e IP privadas para el resto de la Escuela. En la tabla se resumen los rangos de direcciones a utilizar.\\
+
+\begin{tabular}{|c|c|c|}
+\hline \textbf{Direccionamiento público} & IP & Terminales \\ 
+\hline Telemática & 193.147.160.0/27 & 30 \\ 
+\hline Teoría de la Señal & 193.147.160.32/27 & 30 \\ 
+\hline Automática & 193.147.160.64/27 & 28 \\ 
+\hline Electrónica & 193.147.160.96/26  & 56 \\ 
+\hline Servidores & 193.147.160.160/28 & 9 \\ 
+\hline 
+\end{tabular} \\ \\
+
+En el caso de los servidores se tiene uno por cada departamento, dedicado a tareas de impresión e intercambio de archivos, y los que se encuentran en el Centro de Cálculo que son:
+\begin{itemize}
+	\item Servidor Web
+	\item Base de datos (acceso exclusivo Servidor Web)
+	\item Servidor Proxy
+	\item Servidor VoIP
+	\item Servidor VideoIP
+\end{itemize}
+
+\begin{tabular}{|c|c|c|}
+\hline  \textbf{Direccionamiento Privado} & IP & Terminales \\ 
+\hline  CDC/Despachos & 172.16.0.0/27 & 32 \\ 
+\hline  CDC/Aulas & 172.16.0.32/25 & 110 \\ 
+\hline  VoIP & 172.16.0.160/24 & 199 \\ 
+\hline  VideoIP & 172.16.1.160/27 & 18 \\ 
+\hline  Lab Teoría Señal & 172.16.1.192/27 & 25 \\ 
+\hline  Aulas & 172.16.1.224/27 & 71 \\ 
+\hline  Lab Telemática & 172.16.2.98/27 & 30 \\ 
+\hline  Servidores & 172.16.2.130/28 & 9 \\ 
+\hline  WIFI & 172.16.2.146/28 & 10 \\ 
+\hline  Administración y Servicios & 172.16.2.l54/29 & 5 \\ 
+\hline 
+\end{tabular} 
+
+
+\subsection{Dimensionamiento.}
+\subsubsection{Enlace descendente}
+
+\begin{tabular}{|c|c|c|c|c|}
+\hline  & Ton & Toff & Tamaño (Mb) & Reg. Binario (Mbps) \\ 
+\hline HTTP & 3 & 57 & 1.25 & 3.33 \\ 
+\hline FTP & 15 & 285 & 4 & 2.13 \\ 
+\hline POP3/SMTP & 2 & 58 & 0.3 & 1.2 \\ 
+\hline  &  &  & Reg. Bin (Total) & 6.66 \\ 
+\hline 
+\end{tabular} 
+
+\subsubsection{Enlace ascendente}
+
+\begin{tabular}{|c|c|c|c|c|}
+\hline  & Ton & Toff & Tamaño (Mb) & Reg. Binario (Mbps) \\ 
+\hline HTTP & 3 & 57 & 0.02 & 0.053 \\ 
+\hline FTP & 15 & 285 & 0.4 & 1.066 \\ 
+\hline POP3/SMTP & 2 & 58 & 0.3 & 0.8 \\ 
+\hline  &  &  & Reg. Bin (Total) & 1.92 \\ 
+\hline 
+\end{tabular} \\ \\
+En el caso de las cámaras IP se estima un régimen binario de 4Mbps y para la telefonía IP, con la norma G.711, un régimen binario de 64Kbps.
+
+\section{Planos.}
+\section{Pliego de Condiciones.}
+\subsection{Condiciones particulares.}
+\subsection{Condiciones generales.}
+\section{Presupuesto.}
+
+\end{document}
