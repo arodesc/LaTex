@@ -2,7 +2,7 @@
 \usepackage[utf8]{inputenc}
 
 %opening
-\title{Redes de Ordenadores}
+\title{Proyecto T\'ecnico de Red de Datos Corporativa}
 \author{}
 \date{}
 
@@ -57,6 +57,88 @@ En la siguiente tabla se resume la división que se hace de la ESI junto con los
 \hline  CDC/aulas & 110 \\ 
 \hline 
 \end{tabular} \\ \\
+
+
+\subsection{Dimensionamiento}
+A la hora de estimar el tráfico de la red con el fin de dimensionar los enlaces de datos, se decide emplear el modelo ON/OFF para modelar el comportamiento de los terminales de red, exceptuando los terminales VoIP.
+
+En primer lugar hay que definir el perfil de comportamiento de los usuarios de cara al protocolo empleado. Dicho perfil se resume en la siguiente tabla a partir de los porcentajes de uso de los protocolos en uso.\\
+
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+Sector & HTTP & FTTP & POP3/SMTP & Impresión \\ 
+\hline 
+Departamentos & 30\% & 20\% & 10\% & 10\% \\ 
+\hline 
+Aulas  & 10\% & 10\% & 0\% & 0\% \\ 
+\hline 
+Laboratorios & 10\% & 10\% & 0\% & 0\% \\ 
+\hline 
+Secretarías & 20\% & 40\% & 5\% & 3\% \\ 
+\hline 
+CDC(Despachos) & 30\% & 20\% & 10\% & 10\% \\ 
+\hline 
+CDC(Aulas) & 30\% & 20\% & 10\% & 0\% \\ 
+\hline 
+\end{tabular}\\
+
+Hay que tener en cuenta que el modelo ON/OFF establece la tasa de rendimiento de una fuente a partir de:
+\begin{equation}
+	\rho=\frac{Ton}{Ton+Toff}
+\end{equation}
+
+\subsubsection{Enlace Descendente}
+El comportamiento de los protocolos en cuanto tiempo, tamaño y régimenes binarios se detalla en la siguiente tabla:\\
+
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline 
+Protocolo & Ton(s) & Toff(s) & Tamaño(MB) & Rb(Mbps) & rho \\ 
+\hline 
+HTTP & 3 & 57 & 1.25 & 3.333 & 0.0515  \\ 
+\hline 
+POP3/SMTP & 2 & 58 & 0.3 & 1.2 & 0.033 \\ 
+\hline 
+TFTP & 15 & 285 & 4 & 2.133 & 0.0519 \\ 
+\hline 
+Impresión & 2 & 5 & 0.5 & 2 & 0.285 \\ 
+\hline 
+\end{tabular}\\ 
+
+Hay que tener en cuenta que este tráfico representa una parte del tráfico TCP, ya que se han considerado únicamente los protocolos más empleados. Por lo tanto,también es necesario añadir el tráfico UDP que proviene de aplicaciones multimedia.
+
+Una vez obtenido el tráfico de acuerdo con los porcentajes de uso de los distintos protocolos, es necesario obtener el número de usuarios que, simultáneamente, estarán haciendo uso de la red de datos.
+
+
+
+\subsubsection{Enlace Ascendente}
+De manera análoga al enlace descendente se establecen los siguientes requerimientos:\\
+
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline 
+Protocolo & Ton(s) & Toff(s) & Tamaño(MB) & Rb(Mbps) & rho \\ 
+\hline 
+HTTP & 3 & 57 & 0.02 & 0.053 & 0.0515 \\ 
+\hline 
+POP3/SMTP & 2 & 58 & 0.3 & 1.2 & 0.033 \\ 
+\hline 
+TFTP & 15 & 285 & 0.4 & 1.066 & 0.0519 \\ 
+\hline 
+Impresión & 2 & 5 & 0.5 & 2 & 0.285 \\ 
+\hline 
+\end{tabular}\\
+
+Haciendo las consideraciones sobre el tráfico TCP y UDP, y siguiendo el mismo procedimiento que con el enlace descendente se tiene que:
+u
+\subsubsection{Telefon\'ia IP}
+\subsection{Configuraci\'on}
+El proceso de configuración consiste en:
+\begin{enumerate}
+	\item Asignaci\'on din\'amica de las VLAN a los hosts.
+	\item Listas ACL en el router.
+	\item IPsec en el router.
+	\item Tablas NAT en el router.
+\end{enumerate}
+\subsubsection{VLAN}
 Para el direccionamiento se preveen tanto direcciones privadas como públicas. Las IP públicas en el caso de los departamentos e IP privadas para el resto de la Escuela. En la tabla se resumen los rangos de direcciones a utilizar.\\
 
 \begin{tabular}{|c|c|c|}
@@ -92,35 +174,77 @@ En el caso de los servidores se tiene uno por cada departamento, dedicado a tare
 \hline  Administración y Servicios & 172.16.2.l54/29 & 5 \\ 
 \hline 
 \end{tabular} 
-
-
-\subsection{Dimensionamiento.}
-\subsubsection{Enlace descendente}
-
-\begin{tabular}{|c|c|c|c|c|}
-\hline  & Ton & Toff & Tamaño (Mb) & Reg. Binario (Mbps) \\ 
-\hline HTTP & 3 & 57 & 1.25 & 3.33 \\ 
-\hline FTP & 15 & 285 & 4 & 2.13 \\ 
-\hline POP3/SMTP & 2 & 58 & 0.3 & 1.2 \\ 
-\hline  &  &  & Reg. Bin (Total) & 6.66 \\ 
-\hline 
-\end{tabular} 
-
-\subsubsection{Enlace ascendente}
-
-\begin{tabular}{|c|c|c|c|c|}
-\hline  & Ton & Toff & Tamaño (Mb) & Reg. Binario (Mbps) \\ 
-\hline HTTP & 3 & 57 & 0.02 & 0.053 \\ 
-\hline FTP & 15 & 285 & 0.4 & 1.066 \\ 
-\hline POP3/SMTP & 2 & 58 & 0.3 & 0.8 \\ 
-\hline  &  &  & Reg. Bin (Total) & 1.92 \\ 
-\hline 
-\end{tabular} \\ \\
-En el caso de las cámaras IP se estima un régimen binario de 4Mbps y para la telefonía IP, con la norma G.711, un régimen binario de 64Kbps.
-
 \section{Planos.}
 \section{Pliego de Condiciones.}
 \subsection{Condiciones particulares.}
+\subsubsection{Protocolos empleados}
+En el Nivel Físico (primera capa del modelo OSI), los estándares para la interconexión de los switches con los terminales y para conectar los switches de las plantas con  los servidores del sótano van a ser
+802.3x, concretamente:
+\begin{itemize}
+	\item 100BaseT (802.3u): Para los enlaces entre equipos terminales y switches.
+	\item 1000BaseX (802.3z): Para los enlaces troncales.
+\end{itemize}
+ 
+Hoy en día, el término Ethernet se utiliza para referirse a la norma IEEE 802.3. Es un estándar de redes de área local para computadores con acceso al medio por contienda (CSMA/CD). Define las características de cableado y señalización de nivel físico y los formatos de tramas de datos del nivel de enlace de datos del modelo OSI.
+
+El \textit{Nivel de Enlace de Datos} (segunda capa), se ocupa del direccionamiento físico, del acceso al medio, de la detección de errores, de la distribución ordenada de tramas y del control del flujo. 
+ 
+
+\textbf{STP(IEEE 802.1d):} Es por excelencia el protocolo más usado para la eliminación lógica de líneas redundantes en las infraestructuras utilizadas en la red. 
+
+La redundancia se logra teniendo varios enlaces físicos entre los switches, de forma que queden varios caminos para llegar a un mismo destino. El resultado de esto es que la red LAN queda con ciclos o bucles; los ciclos son altamente perjudiciales para la misma dado que producen una serie de problemas que acabarán por dejarla inutilizada.
+
+STP surge ante la necesidad de tener una red LAN redundante y dinámica libre de los problemas asociados a esta.  Está basado en un algoritmo diseñado por Radia Perlman, y existen múltiples variantes debido al tiempo que tarda en converger.  Como son:
+\begin{itemize}
+	\item\textit{ MSTP(IEEE 802.1s) (Multiple spanning-tree Protocol):} Provee de conectividad simple y completa a las tramas asignada a cualquier VLAN de una red local por lo que permite utilizar caminos separados a las tramas pertenecientes a diferentes VLAN, utilizando instancias independiente. 
+	Resulta más eficiente ya que tiene balanceo de tráfico y por otro lado si un enlace cae aprovecha mucho mejor la redundancia.
+	\item \textit{RSTP(IEEE 802.1w) (Rapid spanning-tree Protocol):} Reduce significativamente el tiempo de convergencia de la topología de la red cuando ocurre un cambio en la misma. 
+	El puerto se configura como tal cuando se sabe que nunca será conectado hacia otro switch de manera que pasa inmediatamente al estado de direccionamiento sin esperar los pasos intermedios del algoritmo, etapas de escucha y aprendizaje, los cuales consumen tiempo.
+\end{itemize}
+
+\textbf{HDLC:} El protocolo HDLC (control de alto nivel del enlace de datos; es un protocolo propuesto por OSI basado en el protocolo SDLC (control de enlace de datos síncrono). 
+Organizaciones de estándares han dado su propia versión del HDLC acomodado a las aplicaciones concretas para las que se desea utilizar.
+El red objeto del proyecto hace uso de LLC y PPP.
+\begin{itemize}
+	\item \textit{PPP:} permite establecer una comunicación a nivel de la capa de enlace    TCP/IP entre dos computadoras. Facilita dos funciones importantes:
+	\begin{enumerate}
+		\item Autenticación. Generalmente mediante una clave de acceso.
+		\item Asignación dinámica de IP.
+	\end{enumerate}
+	\item \textit{LLC:} define la forma en que los datos son transferidos sobre el medio físico, proporcionando servicio a las capas superiores. 
+	Responsable del control de enlace lógico, maneja el control de errores, control del flujo, entramado, control de diálogo y direccionamiento de la subcapa MAC. El protocolo LLC más generalizado es IEEE 802.2
+\end{itemize}
+La tercera capa o Nivel de Red, es la encargada de efectuar el transporte de los datos de la máquina origen a la de destino, independizándolos del tipo de red física que esté utilizando. Sus protocolos son:
+\begin{itemize}
+	\item IP:  Su función principal es el uso bidireccional en origen o destino de comunicación para transmitir datos mediante un protocolo no orientado a conexión que transfiere paquetes conmutados tanto a nivel local como a través de redes. 
+	Las cabeceras IP contienen las direcciones de las máquinas de origen y destino, direcciones que serán usadas por los conmutadores y los routers para decidir el tramo de red por el que reenviarán los paquetes. Quizás los aspectos más complejos de IP son:
+	\begin{enumerate}
+	\item Direccionamiento: se refiere a la forma como se asigna una dirección IP y cómo se dividen y se agrupan subredes de equipos.
+	\item Encaminamiento o enrutamiento: mecanismo por el que en una red los paquetes de información se hacen llegar desde su origen a su destino final, siguiendo un camino o ruta a través de la red.
+	\end{enumerate}
+\end{itemize}
+En el cuarto nivel o Nivel de Transporte, encargado de la transferencia libre de errores de los datos entre el emisor y el receptor (aunque no estén directamente conectados), y de mantener el flujo de la red, se encuentran dos protocolos principales:
+\begin{itemize}
+	\item UDP: Protocolo no orientado a conexión, permite el envío de datagramas a través de la red sin que se haya establecido previamente una conexión. Tampoco tiene confirmación ni control de flujo, por lo que los paquetes pueden adelantarse unos a otros; no se sabe si ha llegado correctamente, ya que no hay confirmación de entrega o recepción. 
+	Su uso principal es para protocolos como DHCP, BOOTP, DNS.
+	\item TCP: Protocolo orientado a conexión, controla la transmisión de datos durante una comunicación establecida entre dos máquinas. Garantiza que los datos serán entregados en su destino sin errores y en el mismo orden en que se transmitieron. 
+	También proporciona un mecanismo para distinguir distintas aplicaciones dentro de una misma máquina, a través del concepto de puerto. Da soporte a muchas de las aplicaciones más populares de Internet y protocolos de aplicación HTTP, SMTP, SSH y FTP.
+\end{itemize}
+El Nivel de Aplicación ofrece a las aplicaciones la posibilidad de acceder a los servicios de las demás capas y define los protocolos que utilizan las aplicaciones para intercambiar datos. En esta capa aparecen diferentes protocolos y servicios:
+\begin{enumerate}
+	\item HTTP: RFC 2616 
+
+Utilizado para el acceso, visualización y navegación Web, permite la transferencia de archivos (principalmente, en formato HTML) entre un navegador (el cliente) y un servidor web localizado mediante una cadena de caracteres denominada dirección URL. 
+	\item SMTP: RFC 2821 
+
+Protocolo para la transferencia simple de correo electrónico, basado en texto, utilizado para el intercambio de mensajes de correo electrónico entre ordenadores u otros dispositivos.
+	\item SSH: 
+
+Intérprete de órdenes segura, es el nombre de un protocolo y del programa que lo implementa. Sirve para acceder a máquinas remotas a través de una red. Permite manejar por completo el ordenador mediante un intérprete de comandos, y también puede redirigir el tráfico de X para poder ejecutar programas gráficos si tenemos un Servidor X corriendo.
+	\item FTP:  
+
+Protocolo de transferencia de archivos entre sistemas conectados a una red TCP , basado en la arquitectura cliente-servidor. 
+\end{enumerate}
 \subsection{Condiciones generales.}
 \section{Presupuesto.}
 
