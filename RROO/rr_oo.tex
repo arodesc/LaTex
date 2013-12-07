@@ -139,15 +139,14 @@ El proceso de configuración consiste en:
 	\item Tablas NAT en el router.
 \end{enumerate}
 \subsubsection{VLAN}
-Para el direccionamiento se preveen tanto direcciones privadas como públicas. Las IP públicas en el caso de los departamentos e IP privadas para el resto de la Escuela. En la tabla se resumen los rangos de direcciones a utilizar.\\
-
-\begin{tabular}{|c|c|c|}
-\hline \textbf{Direccionamiento público} & IP & Terminales \\ 
-\hline Telemática & 193.147.160.0/27 & 30 \\ 
-\hline Teoría de la Señal & 193.147.160.32/27 & 30 \\ 
-\hline Automática & 193.147.160.64/27 & 28 \\ 
-\hline Electrónica & 193.147.160.96/26  & 56 \\ 
-\hline Servidores & 193.147.160.160/28 & 9 \\ 
+Para el direccionamiento se preveen tanto direcciones privadas como públicas. Las IP públicas en el caso de los departamentos e IP privadas para el resto de la Escuela. En la tabla se resumen los rangos de direcciones a utilizar.\\ \\
+\begin{tabular}{|c|c|c|c|}
+\hline \textbf{Direccionamiento público} & IP & Terminales & Sobredimensionado \\ 
+\hline Telemática & 193.147.160.0/26 & 30 & 6 \\ 
+\hline Teoría de la Señal & 193.147.160.36/26 & 30 & 6 \\ 
+\hline Automática & 193.147.160.72/26 & 28 & 6 \\ 
+\hline Electrónica & 193.147.160.138/25  & 56 & 10 \\ 
+\hline Servidores & 193.147.160.204/28 & 9 & 2 \\ 
 \hline 
 \end{tabular} \\ \\
 
@@ -159,19 +158,18 @@ En el caso de los servidores se tiene uno por cada departamento, dedicado a tare
 	\item Servidor VoIP
 	\item Servidor VideoIP
 \end{itemize}
-
-\begin{tabular}{|c|c|c|}
-\hline  \textbf{Direccionamiento Privado} & IP & Terminales \\ 
-\hline  CDC/Despachos & 172.16.0.0/27 & 32 \\ 
-\hline  CDC/Aulas & 172.16.0.32/25 & 110 \\ 
-\hline  VoIP & 172.16.0.160/24 & 199 \\ 
-\hline  VideoIP & 172.16.1.160/27 & 18 \\ 
-\hline  Lab Teoría Señal & 172.16.1.192/27 & 25 \\ 
-\hline  Aulas & 172.16.1.224/27 & 71 \\ 
-\hline  Lab Telemática & 172.16.2.98/27 & 30 \\ 
-\hline  Servidores & 172.16.2.130/28 & 9 \\ 
-\hline  WIFI & 172.16.2.146/28 & 10 \\ 
-\hline  Administración y Servicios & 172.16.2.l54/29 & 5 \\ 
+\begin{tabular}{|c|c|c|c|}
+\hline  \textbf{Direccionamiento Privado} & IP & Terminales & Sobredimensionado \\ 6
+\hline  CDC/Despachos & 172.16.0.0/27 & 32 & 4 \\ 
+\hline  CDC/Aulas & 172.16.0.3/25 & 110 & 20 \\ 
+\hline  VoIP & 172.16.0.166/24 & 199 &  20 \\ 
+\hline  VideoIP & 172.16.1.128/27 & 18 & 4 \\ 
+\hline  Lab Teoría Señal & 172.16.1.150/27 & 25 & 5 \\ 
+\hline  Aulas & 172.16.1.180/27 & 71 & 14 \\ 
+\hline  Lab Telemática & 172.16.2.9/27 & 30 & 6 \\ 
+\hline  Servidores & 172.16.2.45/28 & 9 & 2 \\ 
+\hline  WIFI & 172.16.2.56/28 & 10 & 2 \\ 
+\hline  Administración y Servicios & 172.16.2.68/29 & 5 & 2 \\ 
 \hline 
 \end{tabular}\\ \\
 Para la configuración de las VLAN hay que decidir entre una configuración estática o una configuración dinámica. Atendiendo a razones de simplicidad en la administración se decide implementar VLAN dinámicas.
