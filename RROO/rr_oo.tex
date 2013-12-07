@@ -173,7 +173,84 @@ En el caso de los servidores se tiene uno por cada departamento, dedicado a tare
 \hline  WIFI & 172.16.2.146/28 & 10 \\ 
 \hline  Administración y Servicios & 172.16.2.l54/29 & 5 \\ 
 \hline 
-\end{tabular} 
+\end{tabular}\\ \\
+Para la configuración de las VLAN hay que decidir entre una configuración estática o una configuración dinámica. Atendiendo a razones de simplicidad en la administración se decide implementar VLAN dinámicas.
+
+En este caso, las VLAN dinámicas son puertos del switch que automáticamente determinan a que VLAN pertenece cada puesto de trabajo. El funcionamiento de estas VLANs se basa en las direcciones MAC, direcciones lógicas o protocolos utilizados.
+
+Cuando un puesto de trabajo pide autorización para conectarse a la VLAN el switch chequea la dirección MAC ingresada previamente por el administrador en la base de datos de las mismas y automáticamente se configura el puerto al cual corresponde por la configuración de la VLAN. 
+El mayor beneficio de las VLAN dinámicas es el menor trabajo de administración dentro del armario de comunicaciones cuando se cambian de lugar las estaciones de trabajo o se agregan y también notificación centralizada cuando un usuario desconocido pretende ingresar en la red.
+\subsubsection{Listas de Control de Acceso}
+Las listas de control de acceso, o ACL, son listas de condiciones que se aplican al tráfico que viaja a través de la interfaz del router.
+Estas listas indican al router qué tipo de paquetes aceptar o rechazar en base a las condiciones establecidas en ellas y que permiten la administración del tráfico y aseguran el acceso, bajo esas condiciones, hacia y desde una red.
+La aceptación y rechazo se pueden basar en la dirección origen, dirección destino, protocolo de capa superior y números de puerto.
+
+En definitiva, una lista de control de acceso es un conjunto de sentencias que define cómo se procesan los paquetes que: 
+\begin{itemize}
+	\item Entran a las interfaces de entrada. 
+    \item Se reenvían a través del router. 
+    \item Salen de las interfaces de salida del router. 
+\end{itemize}
+    
+
+En necesario tener en cuenta que si las ACL no están configuradas en el router, todos los paquetes que pasen a través del router tendrán acceso a todas las partes de la red.
+Las ACL se pueden configurar por protocolo, por dirección y por interfaz, entonces: 
+\begin{itemize}
+	\item Por protocolo: 
+	
+	Para controlar el flujo de tráfico de una interfaz, se debe definir una ACL para cada protocolo habilitado en la interfaz. 
+    \item Por dirección: 
+    
+    Las ACL controlan el tráfico en una dirección a la vez de una interfaz. Deben crearse dos ACL por separado para controlar el tráfico entrante y saliente. 
+    \item Por interfaz: 
+    
+    Las ACL controlan el tráfico para una interfaz, por ejemplo, Fast Ethernet 0/0.
+\end{itemize}
+Además, las ACL no actúan sobre paquetes que se originan en el mismo router, y se tienen que ser configuradas para que se puedan aplicadar al tráfico de entrada o de salida.
+\begin{itemize}
+	\item Tráfico entrante: 
+	
+	Los paquetes entrantes se procesan antes de ser enrutados a la interfaz de salida. 
+    \item Tráfico saliente:
+    
+    Los paquetes entrantes se enrutan a la interfaz de salida y luego son procesados a través de la ACL de salida. 
+\end{itemize}
+    
+
+
+En resumen, los objetivos que se persiguen con la creación de ACL son:
+\begin{itemize}
+	\item Limitar el tráfico de red y mejorar el rendimiento de la red.
+    \item Controlar el flujo del tráfico.
+    \item Proporcionar un nivel básico de seguridad para el acceso a la red. 
+    \item Establecer qué tipo de tráfico se envía o se bloquea en las interfaces del router. 
+    \item Otorgar o denegar permiso a los usuarios para acceder a ciertos tipos de archivos.
+\end{itemize}
+Finalmente, el proceso de funcionamiento de las listas de control de acceso (ACL) es el siguiente:
+\begin{enumerate}
+	\item Cuando entra una trama a través de una interfaz, el router verifica si la dirección de capa 2 (MAC) concuerda o si es una trama de broadcast. 
+    \item Si se acepta la dirección de la trama, la información de la trama se elimina y el router busca una ACL en la interfaz entrante. 
+    \item Si existe una ACL se comprueba si el paquete cumple las condiciones de la lista. 
+    \item Si el paquete cumple las condiciones, se ejecuta la acción de aceptar o rechazar el paquete. 
+    \item Si se acepta el paquete en la interfaz, se compara con las entradas de la tabla de enrutamiento para determinar la interfaz destino y conmutarlo a aquella interfaz. Luego el router verifica si la interfaz destino tiene una ACL.
+    \item Si existe una ACL, se compara el paquete con las sentencias de la lista y si el paquete concuerda con una sentencia, se acepta o rechaza el paquete según se indique. 
+    \item Si no hay ACL o se acepta el paquete, el paquete se encapsula en el nuevo protocolo de capa 2 y se envía por la interfaz hacia el dispositivo siguiente.
+\end{enumerate}
+
+\subsection{Cableado}
+La conexión de los diferentes equipos por todo el edificio se 
+hará mediante cables UTP categoría 6, 4 pares LSZH.
+La elección de este tipo de cableado se justifica en que al  emplear tecnología Gigabit Ethernet, es necesario elegir cables UTP de categoría 6 o superior. El problema que surge al emplear cables UTP reside en que no se pueden sobrepasar los 100m de distancia máxima, por lo que ningún enlace podrá superar dicha medida.
+\subsubsection{Distancias}
+\subsubsection{Rosetas}
+\subsubsection{Canaletas y Bandejas Portacables}
+Para el desplazamiento de los cables se utilizarán tanto canaletas horizontales, verticales como bandejas portacables (por los falsos techos existentes). Para saber cuántos metros de canaletas y bandejas usar, lo primero será saber el número de cables UTP-CAT6 que cabrán dentro de estos materiales. Habrá que tener en cuenta para ello que el diámetro exterior del cable UTP-CAT6 es aproximadamente 6mm.
+Con respecto a las canaletas se pueden recurrir a las de 60X40mm, que es lo más usado actualmente. Así que se supondrán siete cables UTP por canaleta.
+En el caso de las bandejas portacables se colocarán tres de ellas, dos de ellas para el transporte de cables y una más por razones de escalabilidad.
+Las canaletas se emplearán para llevar los cables al falso suelo o al falso techo.
+Hay que multiplicar por tres debido a que existen tres bandejas para el trasnporte.
+\subsubsection{Otros elementos}
+
 \section{Planos.}
 \section{Pliego de Condiciones.}
 \subsection{Condiciones particulares.}
