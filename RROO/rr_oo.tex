@@ -378,6 +378,44 @@ Finalmente, el proceso de funcionamiento de las listas de control de acceso (ACL
     \item Si no hay ACL o se acepta el paquete, el paquete se encapsula en el nuevo protocolo de capa 2 y se envía por la interfaz hacia el dispositivo siguiente.
 \end{enumerate}
 
+Existen dos tipos de listas de control de acceso y se identifican por su numeración.
+
+\begin{itemize}
+	\item ACL estándar: del 1 al 99
+	\item ACL extendidad: del 100 al 199
+\end{itemize}
+
+Para su configuración se emplean los siguientes comandos:
+\subsubsection{Tabla NAT}
+La "Traducción de Direcciones de Red", Network Address Translation (NAT), es un método mediante el que las direcciones IP son mapeadas desde un dominio de direcciones a otro, proporcionando encaminamiento transparente a las máquinas finales. Existen muchas variantes de traducción de direcciones que se prestan a distintas aplicaciones. Sin embargo todas las variantes de dispositivos NAT debería compartir las siguientes características:
+\begin{itemize}
+ 	\item Asignación transparente de direcciones.
+    \item Encaminamiento (reenvío de paquetes) transparente mediante la traducción de direcciones.
+    \item Traducción de la carga útil de los paquetes de error ICMP.
+\end{itemize}
+
+La traducción de la dirección de red, se aplica en redes que fueron implementadas con direcciones IP privadas y necesitan tener un acceso a Internet, por lo que se debe solicitar a un proveedor un rango de direcciones válidas para poder asociar dichas direcciones válidas con los hosts que tengan direcciones inválidas y necesiten salida a Internet.
+
+Para que una red privada tenga acceso a Internet, el acceso debe ser por medio de un dispositivo ubicado en la frontera de las dos redes que tenga configurado NAT para la traducción de direcciones, en estos casos lo más conveniente es poner a un router para que los paquetes sean enviados hacia él. Se dan dos tipos de asignación de direcciones:
+\begin{itemize}
+	\item Asignación estática de direcciones.
+
+En el caso de asignación estática de direcciones, existe un mapeo uno a uno de direcciones para las máquinas entre una dirección privada de red y una dirección externa de red durante el tiempo en funcionamiento del NAT. La asignación estática de direcciones asegura que NAT no tiene que administrar la gestión de direcciones con los flujos de sesión.
+
+    \item Asignación dinámica de direcciones. 
+
+En este caso, las direcciones externas son asignadas a las máquinas de la red privada, o viceversa, de manera dinámica, basándose en los requisitos de uso y el flujo de sesión que el NAT determine heurísticamente. Cuando la última de las sesiones que use una dirección asociada termine, NAT liberará la asociación para que la dirección global pueda ser reciclada para su posterior uso. La naturaleza exacta de la asignación de direcciones es específica de cada implementación de NAT.
+\end{itemize}
+
+La forma más simple de realizar la configuración es mediante NAT con sobrecarga, que permite utilizar una única dirección IP pública para mapear múltiples IP privadas.\\ \\
+\textsf{router(config)\# access-list 1 permit ip 172.16.0.0 0.0.0.255\\
+router(config)\# ip nat inside source list 1 interface  fastEthernet 0/0 overload\\
+router(config)\# interface vlan id-vlan\\
+router(config-if)\# ip nat inside\\
+router(config)\# interface fastEthernet 0/0\\
+router(config-if)\# ip nat outside}
+\subsubsection{RIP(Routing Information Protocol)}
+
 \subsection{Cableado}
 La conexión de los diferentes equipos por todo el edificio se 
 hará mediante cables UTP categoría 6, 4 pares LSZH.
@@ -386,9 +424,11 @@ La elección de este tipo de cableado se justifica en que al  emplear tecnologí
 \subsubsection{Rosetas}
 \subsubsection{Canaletas y Bandejas Portacables}
 Para el desplazamiento de los cables se utilizarán tanto canaletas horizontales, verticales como bandejas portacables (por los falsos techos existentes). Para saber cuántos metros de canaletas y bandejas usar, lo primero será saber el número de cables UTP-CAT6 que cabrán dentro de estos materiales. Habrá que tener en cuenta para ello que el diámetro exterior del cable UTP-CAT6 es aproximadamente 6mm.
+
 Con respecto a las canaletas se pueden recurrir a las de 60X40mm, que es lo más usado actualmente. Así que se supondrán siete cables UTP por canaleta.
-En el caso de las bandejas portacables se colocarán tres de ellas, dos de ellas para el transporte de cables y una más por razones de escalabilidad.
-Las canaletas se emplearán para llevar los cables al falso suelo o al falso techo.
+
+En el caso de las bandejas portacables se colocarán tres de ellas, dos de ellas para el transporte de cables y una más por razones de escalabilidad, y las canaletas se emplearán para llevar los cables al falso suelo o al falso techo.
+
 Hay que multiplicar por tres debido a que existen tres bandejas para el trasnporte.
 \subsubsection{Otros elementos}
 
