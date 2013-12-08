@@ -159,15 +159,15 @@ En el caso de los servidores se tiene uno por cada departamento, dedicado a tare
 	\item Servidor VideoIP
 \end{itemize}
 \begin{tabular}{|c|c|c|c|}
-\hline  \textbf{Direccionamiento Privado} & IP & Terminales & Sobredimensionado \\ 6
-\hline  CDC/Despachos & 172.16.0.0/27 & 32 & 4 \\ 
+\hline  \textbf{Direccionamiento Privado} & IP & Terminales & Sobredimensionado \\
+\hline  CDC/Despachos & 172.16.0.0/26 & 32 & 4 \\ 
 \hline  CDC/Aulas & 172.16.0.3/25 & 110 & 20 \\ 
 \hline  VoIP & 172.16.0.166/24 & 199 &  20 \\ 
 \hline  VideoIP & 172.16.1.128/27 & 18 & 4 \\ 
 \hline  Lab Teoría Señal & 172.16.1.150/27 & 25 & 5 \\ 
-\hline  Aulas & 172.16.1.180/27 & 71 & 14 \\ 
-\hline  Lab Telemática & 172.16.2.9/27 & 30 & 6 \\ 
-\hline  Servidores & 172.16.2.45/28 & 9 & 2 \\ 
+\hline  Aulas & 172.16.1.180/25 & 71 & 14 \\ 
+\hline  Lab Telemática & 172.16.2.9/26 & 30 & 6 \\ 
+\hline  Servidores & 172.16.2.45/27 & 9 & 2 \\ 
 \hline  WIFI & 172.16.2.56/28 & 10 & 2 \\ 
 \hline  Administración y Servicios & 172.16.2.68/29 & 5 & 2 \\ 
 \hline 
@@ -178,6 +178,149 @@ En este caso, las VLAN dinámicas son puertos del switch que automáticamente de
 
 Cuando un puesto de trabajo pide autorización para conectarse a la VLAN el switch chequea la dirección MAC ingresada previamente por el administrador en la base de datos de las mismas y automáticamente se configura el puerto al cual corresponde por la configuración de la VLAN. 
 El mayor beneficio de las VLAN dinámicas es el menor trabajo de administración dentro del armario de comunicaciones cuando se cambian de lugar las estaciones de trabajo o se agregan y también notificación centralizada cuando un usuario desconocido pretende ingresar en la red.
+\begin{itemize}
+\item Creaci\'on de las VLAN.
+
+Para agregar una VLAN al switch troncal se emplea el siguiente código:
+\textsf{switch-troncal\# configure terminal\\
+switch-troncal(config)\# vlan vlan-id\\
+switch-troncal(config-vlan)\# name nombre-de-vlan\\
+switch-troncal(config-vlan)\# exit}\\ \\
+Así que en el caso de las VLAN con direccionamiento público:
+
+\textsf{switch-troncal\# configure terminal\\
+switch-troncal(config)\# vlan 10\\
+switch-troncal(config-vlan)\# name telematica\\
+switch-troncal(config-vlan)\# exit\\
+switch-troncal\# configure terminal\\
+switch-troncal(config)\# vlan 20\\
+switch-troncal(config-vlan)\# name tseñal\\
+switch-troncal(config-vlan)\# exit\\
+switch-troncal\# configure terminal\\
+switch-troncal(config)\# vlan 30\\
+switch-troncal(config-vlan)\# name automatica\\
+switch-troncal(config-vlan)\# exit\\
+switch-troncal\# configure terminal\\
+switch-troncal(config)\# vlan 40\\
+switch-troncal(config-vlan)\# name electronica\\
+switch-troncal(config-vlan)\# exit\\
+switch-troncal\# configure terminal\\
+switch-troncal(config)\# vlan 50\\
+switch-troncal(config-vlan)\# name servidores\\
+switch-troncal(config-vlan)\# exit}\\ \\
+Para las VLAN con direccionamiento público, la asignación de subredes al switch troncal se realizaría de la misma manera.
+\item Asignaci\'on de puertos.
+
+\textsf{switch\# configure terminal\\
+switch(config)\# interface interface range-id\\
+switch(config-vlan)\# switchport mode access\\
+switch(config-vlan)\# switchport access vlan vlan-id\\
+switch(config-vlan)\# exit}\\ \\
+Siguiendo con el caso de las VLAN públicas, y para switches de 48 puertos.
+
+\textsf{switch\# configure terminal\\
+switch(config)\# interface interface range f0/0-9\\
+switch(config-vlan)\# switchport mode access\\
+switch(config-vlan)\# switchport access vlan 10\\
+switch(config-vlan)\# exit\\
+switch\# configure terminal\\
+switch(config)\# interface interface range f0/10-18\\
+switch(config-vlan)\# switchport mode access\\
+switch(config-vlan)\# switchport access vlan 20\\
+switch(config-vlan)\# exit\\
+switch\# configure terminal\\
+switch(config)\# interface interface range f0/19-27\\
+switch(config-vlan)\# switchport mode access\\
+switch(config-vlan)\# switchport access vlan 30\\
+switch(config-vlan)\# exit\\
+switch\# configure terminal\\
+switch(config)\# interface interface range f0/28-36\\
+switch(config-vlan)\# switchport mode access\\
+switch(config-vlan)\# switchport access vlan 40\\
+switch(config-vlan)\# exit\\
+switch\# configure terminal\\
+switch(config)\# interface interface range f0/37-45\\
+switch(config-vlan)\# switchport mode access\\
+switch(config-vlan)\# switchport access vlan 50\\
+switch(config-vlan)\# exit\\} \\
+\item Configuraci\'on enlaces troncales.
+
+Un enlace troncal es un enlace punto a punto entre dos dispositivos de
+red. No pertence a una VLAN específica, sino que es un medio para
+comunicar las VLAN entre switches y routers. Hay que tener en cuenta
+que un enlace troncal puede transportar más de una VLAN. Actualmente se emplea el modo 802.1Q
+
+Un puerto de enlace troncal IEEE 802.1Q admite tráfico etiquetado y sin etiquetar, además el enlace troncal dinámico DTP es un protocolo propiedad de cisco, DTP administra la negociación del enlace troncal sólo si el puerto en el otro switch se configura en modo de enlace troncal que admita DTP.
+
+\textsf{switch\# configure terminal\\
+switch(config)\# interface interface-id\\
+switch(config-if)\# switchport mode trunk\\
+switch(config-if)\# switchport trunk native vlan vlan-id\\
+switch(config-if)\# exit\\}\\
+
+Para las VLAN públicas.
+
+\textsf{switch\# configure terminal\\
+switch(config)\# interface g0/0\\
+switch(config-if)\# switchport mode trunk\\
+switch(config-if)\# switchport trunk native vlan 10\\
+switch(config-if)\# exit\\
+switch\# configure terminal\\
+switch(config)\# interface g0/0\\
+switch(config-if)\# switchport mode trunk\\
+switch(config-if)\# switchport trunk native vlan 20\\
+switch(config-if)\# exit\\
+switch\# configure terminal\\
+switch(config)\# interface g0/0\\
+switch(config-if)\# switchport mode trunk\\
+switch(config-if)\# switchport trunk native vlan 30\\
+switch(config-if)\# exit\\switch\# configure terminal\\
+switch(config)\# interface g0/0\\
+switch(config-if)\# switchport mode trunk\\
+switch(config-if)\# switchport trunk native vlan 40\\
+switch(config-if)\# exit\\
+switch\# configure terminal\\
+switch(config)\# interface g0/0\\
+switch(config-if)\# switchport mode trunk\\
+switch(config-if)\# switchport trunk native vlan 50\\
+switch(config-if)\# exit\\}\\
+\item Configuraci\'on de subinterfaces en un router.
+
+Un switch de capa 2 no tiene la capacidad de enrutar paquetes entre VLAN diferentes, por ello es necesario definir las subinterfaces del router y asignarlas a las VLAN correspondientes.
+
+Una interfaz de un router se puede dividir en subinterfaces lógicas, y su configuración es similar a la de las interfaces físicas sólo que al final se le añade un punto y un número; por motivos de administración, como número se empleará el identificador de VLAN.
+
+\textsf{router\# configure terminal\\
+router(config)\# interface interface-id.numero\\
+router(config-subif)\# encapsulation dot1q numero\\
+router(config-subif)\# ip address a.a.a.a b.b.b.b\\
+router(config-subif)\# exit\\}\\
+Con las VLAN públicas.
+
+\textsf{router(config)\# interface f0\\
+router(config-if)\# no ip address\\
+router(config-if)\# exit\\ 
+router(config)\# interface f0.1\\
+router(config-if)\# encapsulation dot1q 10 native\\
+router(config-if)\# ip address 193.147.10.1 255.255.255.0\\
+router(config-if)\# exit\\ 
+router(config)\# interface f0.2\\
+router(config-if)\# encapsulation dot1q 20\\
+router(config-if)\# ip address 193.147.20.1 255.255.255.0\\
+router(config-if)\# exit\\ 
+router(config)\# interface f0.3\\
+router(config-if)\# encapsulation dot1q 30\\
+router(config-if)\# ip address 193.147.30.1 255.255.255.0\\
+router(config-if)\# exit\\
+router(config)\# interface f0.4\\
+router(config-if)\# encapsulation dot1q 40\\
+router(config-if)\# ip address 193.147.40.1 255.255.255.0\\
+router(config-if)\# exit\\
+router(config)\# interface f0.5\\
+router(config-if)\# encapsulation dot1q 50\\
+router(config-if)\# ip address 193.147.50.1 255.255.255.0\\
+router(config-if)\# exit\\}\\
+\end{itemize}
 \subsubsection{Listas de Control de Acceso}
 Las listas de control de acceso, o ACL, son listas de condiciones que se aplican al tráfico que viaja a través de la interfaz del router.
 Estas listas indican al router qué tipo de paquetes aceptar o rechazar en base a las condiciones establecidas en ellas y que permiten la administración del tráfico y aseguran el acceso, bajo esas condiciones, hacia y desde una red.
